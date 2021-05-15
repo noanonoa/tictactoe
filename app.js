@@ -53,3 +53,62 @@ playerOptions.appendChild(onePlayer);
 playerOptions.appendChild(twoPlayers);
 playerOptions.appendChild(startButtonContainer);
 app.appendChild(playerOptions);
+
+/**
+ * Starting The Game
+ */
+const handleStartButton = () => {
+  let game;
+  if (radioInputOne.checked) {
+    game = new TicTacToe(radioInputOne.value);
+  } else if (radioInputTwo.checked) {
+    game = new TicTacToe(radioInputTwo.value);
+  }
+
+  /**
+  * 1. Hide player options
+  */
+  game.hide(playerOptions);
+
+  /**
+  * 2. Render board game and reset button
+  */
+  game.renderBoard('board');
+  game.renderReset('reset-button');
+};
+
+/**
+ * Tic Tac Toe Settings
+ */
+class TicTacToe {
+  constructor(option) {
+    this.option = option;
+  }
+
+  disable(button){
+    button.disabled = true;
+  }
+
+  hide(element){
+    element.style.display = 'none';
+  }
+
+  mode(){
+    return this.option;
+  }
+
+  renderBoard(className){
+    const board = document.createElement('div');
+    board.classList.add(className);
+    app.appendChild(board);
+  }
+
+  renderReset(className){
+    const resetButton = document.createElement('button');
+    const text = document.createTextNode('Reset Game');
+    resetButton.classList.add(className);
+    resetButton.appendChild(text);
+    resetButton.setAttribute('onclick', 'handleResetButton()')
+    app.appendChild(resetButton);
+  }
+};
