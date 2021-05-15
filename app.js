@@ -78,6 +78,22 @@ const handleStartButton = () => {
 };
 
 /**
+ * Resetting The Game
+ */
+const handleResetButton = () => {
+  const playerOptions = document.querySelector('.player-options');
+  const board = document.querySelector('.board');
+  const resetButton = document.querySelector('.reset-button');
+
+  /**
+  * App Default Settings
+  */
+  playerOptions.style.display = 'flex';
+  app.removeChild(board)
+  app.removeChild(resetButton)
+};
+
+/**
  * Tic Tac Toe Settings
  */
 class TicTacToe {
