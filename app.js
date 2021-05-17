@@ -116,6 +116,11 @@ class TicTacToe {
   renderBoard(className){
     const board = document.createElement('div');
     board.classList.add(className);
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      board.appendChild(cell);
+    }
     app.appendChild(board);
   }
 
