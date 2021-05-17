@@ -7,7 +7,7 @@
 :root {
   --app-width: 360px;
   --cell-size: 120px;
-  --mark-size: calc(var(--cell-size) * .7);
+  --mark-size: calc(var(--cell-size) * .9);
 }
 
 html,
@@ -62,6 +62,10 @@ button {
   width: var(--cell-size);
   height: var(--cell-size);
   border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .cell:nth-child(-n + 3) {
@@ -78,4 +82,40 @@ button {
 
 .cell:nth-child(n + 7) {
   border-bottom: none;
+}
+
+.cell.x::before,
+.cell.x::after {
+  content: '';
+  width: calc(var(--mark-size) * .15);
+  height: var(--mark-size);
+  position: absolute;
+  background-color: black;
+}
+
+.cell.x::before {
+  transform: rotate(45deg);
+}
+
+.cell.x::after {
+  transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cell.circle::before {
+  width: var(--mark-size);
+  height: var(--mark-size);
+  background-color: black;
+}
+
+.cell.circle::after {
+  width: calc(var(--mark-size) * .7);
+  height: calc(var(--mark-size) * .7);
+  background-color: white;
 }
