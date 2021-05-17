@@ -119,6 +119,7 @@ const handleClick = (e) => {
   /**
    * 4. Switch Turns
    */
+  switchTurns();
 };
 
 /**
@@ -126,6 +127,13 @@ const handleClick = (e) => {
  */
 const placeMark = (cell, currentClass) => {
   cell.classList.add(currentClass);
+};
+
+/**
+ * Switching Turns
+ */
+const switchTurns = () => {
+  circleTurn = !circleTurn;
 };
 
 /**
