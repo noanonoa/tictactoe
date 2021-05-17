@@ -55,11 +55,21 @@ playerOptions.appendChild(startButtonContainer);
 app.appendChild(playerOptions);
 
 /**
- * Markers And Toggles
+ * Markers, Toggles, And Game Conditions
  */
 const X_CLASS = 'x';
 const CIRCLE_CLASS = 'circle';
 let circleTurn = false;
+const WINNING_COMBINATIONS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
 
 /**
  * Starting The Game
@@ -111,6 +121,9 @@ const handleClick = (e) => {
   /**
    * 2. Check For Win
    */
+  if (checkWin(currentClass)) {
+    endGame(false);
+  }
 
   /**
    * 3. Check For Draw
@@ -132,6 +145,33 @@ const placeMark = (cell, currentClass) => {
  */
 const switchTurns = () => {
   circleTurn = !circleTurn;
+};
+
+/**
+ * Checking For Win
+ */
+const checkWin = (currentClass) => {
+  return WINNING_COMBINATIONS.some(combination => {
+    return combination.every(index => {
+      return document.getElementsByClassName('cell')[index].classList.contains(currentClass);
+    })
+  })
+};
+
+/**
+ * Ending The Game
+ */
+const endGame = (draw) => {
+  if (draw) {
+
+  } else {
+    const board = document.querySelector('.board');
+    const overlayDisplay = document.createElement('div');
+    const winningMessage = document.createTextNode(`${circleTurn ? 'O' : 'X'} Wins!`);
+    overlayDisplay.appendChild(winningMessage);
+    overlayDisplay.classList.add('show');
+    board.appendChild(overlayDisplay);
+  }
 };
 
 const setBoardHoverClass = () => {
