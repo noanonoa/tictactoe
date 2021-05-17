@@ -116,10 +116,8 @@ const handleClick = (e) => {
    * 3. Check For Draw
    */
 
-  /**
-   * 4. Switch Turns
-   */
   switchTurns();
+  setBoardHoverClass();
 };
 
 /**
@@ -134,6 +132,17 @@ const placeMark = (cell, currentClass) => {
  */
 const switchTurns = () => {
   circleTurn = !circleTurn;
+};
+
+const setBoardHoverClass = () => {
+  const board = document.querySelector('.board');
+  board.classList.remove(X_CLASS);
+  board.classList.remove(CIRCLE_CLASS);
+  if (circleTurn) {
+    board.classList.add(CIRCLE_CLASS);
+  } else {
+    board.classList.add(X_CLASS);
+  }
 };
 
 /**
@@ -166,6 +175,8 @@ class TicTacToe {
       board.appendChild(cell);
     }
     app.appendChild(board);
+    circleTurn = false;
+    setBoardHoverClass();
   }
 
   renderReset(className){
