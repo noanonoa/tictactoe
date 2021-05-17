@@ -117,20 +117,14 @@ const handleClick = (e) => {
   const cell = e.target;
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
   placeMark(cell, currentClass);
-  
-  /**
-   * 2. Check For Win
-   */
   if (checkWin(currentClass)) {
     endGame(false);
+  } else if (isDraw()) {
+    endGame(true);
+  } else {
+    switchTurns();
+    setBoardHoverClass();
   }
-
-  /**
-   * 3. Check For Draw
-   */
-
-  switchTurns();
-  setBoardHoverClass();
 };
 
 /**
@@ -159,21 +153,36 @@ const checkWin = (currentClass) => {
 };
 
 /**
+ * When A Draw
+ */
+const isDraw = () => {
+  const cellElements = document.getElementsByClassName('cell');
+  return [...cellElements].every(cell => {
+    return cell.classList.contains(X_CLASS) ||
+      cell.classList.contains(CIRCLE_CLASS);
+  })
+};
+
+/**
  * Ending The Game
  */
 const endGame = (draw) => {
+  const board = document.querySelector('.board');
+  const overlayDisplay = document.createElement('div');
+  let winningMessage;
   if (draw) {
-
+    winningMessage = document.createTextNode(`Draw!`);
   } else {
-    const board = document.querySelector('.board');
-    const overlayDisplay = document.createElement('div');
-    const winningMessage = document.createTextNode(`${circleTurn ? 'O' : 'X'} Wins!`);
-    overlayDisplay.appendChild(winningMessage);
-    overlayDisplay.classList.add('show');
-    board.appendChild(overlayDisplay);
+    winningMessage = document.createTextNode(`${circleTurn ? 'O' : 'X'} Wins!`);
   }
+  overlayDisplay.appendChild(winningMessage);
+  overlayDisplay.classList.add('show');
+  board.appendChild(overlayDisplay);
 };
 
+/**
+ * Determing Player Turn
+ */
 const setBoardHoverClass = () => {
   const board = document.querySelector('.board');
   board.classList.remove(X_CLASS);
