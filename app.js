@@ -55,6 +55,13 @@ playerOptions.appendChild(startButtonContainer);
 app.appendChild(playerOptions);
 
 /**
+ * Markers And Toggles
+ */
+const X_CLASS = 'x';
+const CIRCLE_CLASS = 'circle';
+let circleTurn = false;
+
+/**
  * Starting The Game
  */
 const handleStartButton = () => {
@@ -66,12 +73,12 @@ const handleStartButton = () => {
   }
 
   /**
-  * 1. Hide player options
+  * 1. Hide Player Options
   */
   game.hide(playerOptions);
 
   /**
-  * 2. Render board game and reset button
+  * 2. Render Board Game And Reset Button
   */
   game.renderBoard('board');
   game.renderReset('reset-button');
@@ -91,6 +98,34 @@ const handleResetButton = () => {
   playerOptions.style.display = 'flex';
   app.removeChild(board)
   app.removeChild(resetButton)
+};
+
+/**
+ * Clicking On A Cell
+ */
+const handleClick = (e) => {
+  const cell = e.target;
+  const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
+  placeMark(cell, currentClass);
+  
+  /**
+   * 2. Check For Win
+   */
+
+  /**
+   * 3. Check For Draw
+   */
+
+  /**
+   * 4. Switch Turns
+   */
+};
+
+/**
+ * Placing Mark
+ */
+const placeMark = (cell, currentClass) => {
+  cell.classList.add(currentClass);
 };
 
 /**
@@ -119,6 +154,7 @@ class TicTacToe {
     for (let i = 0; i < 9; i++) {
       const cell = document.createElement('div');
       cell.classList.add('cell');
+      cell.addEventListener('click', handleClick, { once: true })
       board.appendChild(cell);
     }
     app.appendChild(board);
