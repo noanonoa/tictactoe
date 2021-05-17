@@ -46,6 +46,7 @@ body {
   justify-items: center;
   align-items: center;
   grid-template-columns: repeat(3, auto);
+  display: relative;
 
   /* border: 2px solid green; */
 }
@@ -142,4 +143,17 @@ button {
   width: calc(var(--mark-size) * .7);
   height: calc(var(--mark-size) * .7);
   background-color: white;
+}
+
+.show {
+  position: absolute;
+  background-color: rgba(0, 0, 0, .9);
+  width: var(--app-width);
+  height: 100%;
+  max-height: 450px;
+  color: white;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
