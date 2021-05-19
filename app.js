@@ -5,37 +5,37 @@ const app = document.querySelector('.app');
 const playerOptions = document.createElement('div');
 const onePlayer = document.createElement('div');
 const twoPlayers = document.createElement('div');
-const radioInputOne = document.createElement('input');
-const radioInputTwo = document.createElement('input');
-const inputLabelOne = document.createElement('label');
-const inputLabelTwo = document.createElement('label');
+const onePlayerMode = document.createElement('input');
+const twoPlayerMode = document.createElement('input');
+const onePlayerLabel = document.createElement('label');
+const twoPlayerLabel = document.createElement('label');
 const startButtonContainer = document.createElement('div');
 const startButton = document.createElement('button');
 
 /**
  * One Player Element Settings
  */
-radioInputOne.setAttribute('id', 'one-player');
-radioInputOne.setAttribute('name', 'player options');
-radioInputOne.setAttribute('type', 'radio');
-radioInputOne.checked = true;
-radioInputOne.value = 'one player';
-inputLabelOne.setAttribute('for', 'one-player');
-inputLabelOne.innerText = '1 Player';
-onePlayer.appendChild(radioInputOne);
-onePlayer.appendChild(inputLabelOne);
+onePlayerMode.setAttribute('id', 'one-player');
+onePlayerMode.setAttribute('name', 'player options');
+onePlayerMode.setAttribute('type', 'radio');
+onePlayerMode.checked = true;
+onePlayerMode.value = 'one player';
+onePlayerLabel.setAttribute('for', 'one-player');
+onePlayerLabel.innerText = '1 Player';
+onePlayer.appendChild(onePlayerMode);
+onePlayer.appendChild(onePlayerLabel);
 
 /**
  * Two Player Element Settings
  */
-radioInputTwo.setAttribute('id', 'two-players');
-radioInputTwo.setAttribute('name', 'player options');
-radioInputTwo.setAttribute('type', 'radio');
-radioInputTwo.value = 'two players';
-inputLabelTwo.setAttribute('for', 'two-players');
-inputLabelTwo.innerText = '2 Players';
-twoPlayers.appendChild(radioInputTwo);
-twoPlayers.appendChild(inputLabelTwo);
+twoPlayerMode.setAttribute('id', 'two-players');
+twoPlayerMode.setAttribute('name', 'player options');
+twoPlayerMode.setAttribute('type', 'radio');
+twoPlayerMode.value = 'two players';
+twoPlayerLabel.setAttribute('for', 'two-players');
+twoPlayerLabel.innerText = '2 Players';
+twoPlayers.appendChild(twoPlayerMode);
+twoPlayers.appendChild(twoPlayerLabel);
 
 /**
  * Start Button Element Settings
@@ -76,10 +76,10 @@ const WINNING_COMBINATIONS = [
  */
 const handleStartButton = () => {
   let game;
-  if (radioInputOne.checked) {
-    game = new TicTacToe(radioInputOne.value);
-  } else if (radioInputTwo.checked) {
-    game = new TicTacToe(radioInputTwo.value);
+  if (onePlayerMode.checked) {
+    game = new TicTacToe(onePlayerMode.value);
+  } else if (twoPlayerMode.checked) {
+    game = new TicTacToe(twoPlayerMode.value);
   }
 
   /**
@@ -117,13 +117,44 @@ const handleClick = (e) => {
   const cell = e.target;
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
   placeMark(cell, currentClass);
-  if (checkWin(currentClass)) {
-    endGame(false);
-  } else if (isDraw()) {
-    endGame(true);
-  } else {
-    switchTurns();
-    setBoardHoverClass();
+
+  /**
+   * On One Player Mode
+   */
+  if (onePlayerMode.checked) {
+    const availableCells = [...document.querySelector('.board').childNodes].filter(cell => (
+      ![...cell.classList].includes(X_CLASS) && ![...cell.classList].includes(CIRCLE_CLASS)
+    ))
+    const randomIndex = Math.floor(Math.random() * availableCells.length);
+    const computerChoice = availableCells[randomIndex];
+    if (computerChoice) computerChoice.removeEventListener('click', handleClick);
+    if (checkWin(X_CLASS)) {
+      endGame(false);
+    } 
+    else if (availableCells.length === 0) {
+      endGame(true);
+    }
+    else {
+      placeMark(computerChoice, CIRCLE_CLASS);
+    if (checkWin(CIRCLE_CLASS)) {
+      circleTurn = true;
+      endGame(false);
+    }
+  }
+}
+
+  /** 
+   * On Two Player Mode
+   */
+  else if (twoPlayerMode.checked) {
+    if (checkWin(currentClass)) {
+      endGame(false);
+    } else if (isDraw()) {
+      endGame(true);
+    } else {
+      switchTurns();
+      setBoardHoverClass();
+    }
   }
 };
 
@@ -131,7 +162,7 @@ const handleClick = (e) => {
  * Placing Mark
  */
 const placeMark = (cell, currentClass) => {
-  cell.classList.add(currentClass);
+    cell.classList.add(currentClass);
 };
 
 /**
@@ -206,10 +237,10 @@ const playAgain = () => {
   const board = document.querySelector('.board');
   const resetButton = document.querySelector('.reset-button');
   let game;
-  if (radioInputOne.checked) {
-    game = new TicTacToe(radioInputOne.value);
-  } else if (radioInputTwo.checked) {
-    game = new TicTacToe(radioInputTwo.value);
+  if (onePlayerMode.checked) {
+    game = new TicTacToe(onePlayerMode.value);
+  } else if (twoPlayerMode.checked) {
+    game = new TicTacToe(twoPlayerMode.value);
   }
   app.removeChild(board);
   app.removeChild(resetButton);
