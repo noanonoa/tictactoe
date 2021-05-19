@@ -146,14 +146,23 @@ button {
 }
 
 .show {
+  font-family: Avenir, Sans-serif;
   position: absolute;
-  background-color: rgba(0, 0, 0, .9);
+  background-color: rgba(0, 0, 0, .8);
   width: var(--app-width);
   height: 100%;
   max-height: 450px;
   color: white;
-  font-size: 2rem;
+  font-size: 3rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.show > button {
+  width: 120px;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  font-size: 1rem;
 }
