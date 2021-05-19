@@ -122,7 +122,7 @@ const handleClick = (e) => {
    * On One Player Mode
    */
   if (onePlayerMode.checked) {
-    const availableCells = [...document.querySelector('.board').childNodes].filter(cell => (
+    let availableCells = [...document.querySelector('.board').childNodes].filter(cell => (
       ![...cell.classList].includes(X_CLASS) && ![...cell.classList].includes(CIRCLE_CLASS)
     ))
     const randomIndex = Math.floor(Math.random() * availableCells.length);
@@ -135,13 +135,25 @@ const handleClick = (e) => {
       endGame(true);
     }
     else {
-      placeMark(computerChoice, CIRCLE_CLASS);
-    if (checkWin(CIRCLE_CLASS)) {
-      circleTurn = true;
-      endGame(false);
+      availableCells.forEach(cell => cell.removeEventListener('click', handleClick));
+      const waitForComputerToPlay = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          placeMark(computerChoice, CIRCLE_CLASS);
+          availableCells = [...document.querySelector('.board').childNodes].filter(cell => (
+            ![...cell.classList].includes(X_CLASS) && ![...cell.classList].includes(CIRCLE_CLASS)
+          )) 
+          resolve(availableCells);
+        }, 500)
+      });
+      waitForComputerToPlay.then(availableCells => {
+        availableCells.forEach(cell => cell.addEventListener('click', handleClick, { once: true }));
+        if (checkWin(CIRCLE_CLASS)) {
+          circleTurn = true;
+          endGame(false);
+        }
+      })
     }
   }
-}
 
   /** 
    * On Two Player Mode
