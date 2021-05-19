@@ -169,13 +169,17 @@ const isDraw = () => {
 const endGame = (draw) => {
   const board = document.querySelector('.board');
   const overlayDisplay = document.createElement('div');
+  const playAgainButton = document.createElement('button');
   let winningMessage;
   if (draw) {
     winningMessage = document.createTextNode(`Draw!`);
   } else {
     winningMessage = document.createTextNode(`${circleTurn ? 'O' : 'X'} Wins!`);
   }
+  playAgainButton.innerText = 'Play Again';
+  playAgainButton.setAttribute('onclick', 'playAgain()');
   overlayDisplay.appendChild(winningMessage);
+  overlayDisplay.appendChild(playAgainButton);
   overlayDisplay.classList.add('show');
   board.appendChild(overlayDisplay);
 };
@@ -192,6 +196,25 @@ const setBoardHoverClass = () => {
   } else {
     board.classList.add(X_CLASS);
   }
+};
+
+/**
+ * Play Again
+ */
+const playAgain = () => {
+  const app = document.querySelector('.app');
+  const board = document.querySelector('.board');
+  const resetButton = document.querySelector('.reset-button');
+  let game;
+  if (radioInputOne.checked) {
+    game = new TicTacToe(radioInputOne.value);
+  } else if (radioInputTwo.checked) {
+    game = new TicTacToe(radioInputTwo.value);
+  }
+  app.removeChild(board);
+  app.removeChild(resetButton);
+  game.renderBoard('board');
+  game.renderReset('reset-button');
 };
 
 /**
